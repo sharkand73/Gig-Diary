@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Gig } from '../models/Gig';
-import GigService from '../services/GigService';
+import ServiceContainer from '../services/ServiceContainer';
+import GigService from '../services/LocalGigService';
+import { IGigService } from '../services/IGigService';
 
 function New() {
 
@@ -23,7 +24,8 @@ function New() {
         const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
         
         try {
-            const newGig = await GigService.create(formData as any, controller.signal);
+            const gigService : IGigService = ServiceContainer.getGigService();
+            const newGig = await gigService.create(formData as any, controller.signal);
             console.log('Created gig:', newGig);
             clearTimeout(timeoutId);
         } catch (error) {

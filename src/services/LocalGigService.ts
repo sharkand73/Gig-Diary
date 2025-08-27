@@ -1,6 +1,7 @@
 import { Gig } from '../models/Gig';
+import { IGigService } from './IGigService';
 
-class GigService {
+class LocalGigService implements IGigService {
   private storageKey = 'gigs';
 
   async create(gig: Omit<Gig, 'id'>, signal?: AbortSignal): Promise<Gig> {
@@ -70,4 +71,4 @@ class GigService {
   }
 }
 
-export default new GigService();
+export default new LocalGigService();

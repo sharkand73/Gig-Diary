@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Gig } from '../models/Gig';
+import GigService from '../services/GigService';
 
 function New() {
 
@@ -14,11 +16,22 @@ function New() {
         calendarSync: false
     });
 
-    function handleSubmit(e: any) {
+    async function handleSubmit(e: any) {
         e.preventDefault();
-        console.log(formData);
+        
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
+        
+        try {
+            const newGig = await GigService.create(formData as any, controller.signal);
+            console.log('Created gig:', newGig);
+            clearTimeout(timeoutId);
+        } catch (error) {
+            alert('Failed to create gig: ' + error)
+            console.error('Failed to create gig:', error);
+        }
     }
-
+    
     function onTextChange(e: any) {
         setFormData({...formData, [e.target.id]: e.target.value});
     }
@@ -34,7 +47,7 @@ function New() {
                 <div className='card-body bg-light'>
 
                     <h1 className='mb-5'>Enter Gig Details</h1>
-                    
+
                     <form onSubmit={handleSubmit}>
                         <div className='mb-4'>
                             <div className='row'>

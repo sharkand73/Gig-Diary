@@ -5,12 +5,12 @@ import { useNavigate } from 'react-router-dom';
 
 function New() {
 
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         act: '',
         fee: 200,
         leaveDate: new Date().toISOString().slice(0, 16),
-        returnDate: new Date().toISOString().slice(0, 16),        
+        returnDate: new Date().toISOString().slice(0, 16),
         description: '',
         venue: '',
         postcode: '',
@@ -20,29 +20,29 @@ function New() {
 
     async function handleSubmit(e: any) {
         e.preventDefault();
-        
+
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
-        
+
         try {
-            const gigService : IGigService = ServiceContainer.getGigService();
+            const gigService: IGigService = ServiceContainer.getGigService();
             const newGig = await gigService.create(formData as any, controller.signal);
             console.log('Created gig:', newGig);
             clearTimeout(timeoutId);
             navigate('/list');
-            
+
         } catch (error) {
             alert('Failed to create gig: ' + error)
             console.error('Failed to create gig:', error);
         }
     }
-    
+
     function onTextChange(e: any) {
-        setFormData({...formData, [e.target.id]: e.target.value});
+        setFormData({ ...formData, [e.target.id]: e.target.value });
     }
 
     function onCheckboxChange(e: any) {
-        setFormData({...formData, calendarSync: e.target.checked});
+        setFormData({ ...formData, calendarSync: e.target.checked });
     }
 
 
@@ -116,7 +116,11 @@ function New() {
                             </div>
                         </div>
 
-                        <button type="submit" className="btn btn-primary mt-4">Submit</button>
+                        <div className="text-end mt-4">
+                            <button type="button" className="btn btn-outline-secondary me-2" onClick={() => navigate('/list')}>Cancel</button>
+                            <button type="submit" className="btn btn-primary">Submit</button>
+                        </div>
+
                     </form>
                 </div>
             </div>

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import ServiceContainer from '../services/ServiceContainer';
-import GigService from '../services/LocalGigService';
 import { IGigService } from '../services/IGigService';
+import { useNavigate } from 'react-router-dom';
 
 function New() {
 
+    const navigate = useNavigate(); 
     const [formData, setFormData] = useState({
         act: '',
         fee: 200,
@@ -28,6 +29,8 @@ function New() {
             const newGig = await gigService.create(formData as any, controller.signal);
             console.log('Created gig:', newGig);
             clearTimeout(timeoutId);
+            navigate('/list');
+            
         } catch (error) {
             alert('Failed to create gig: ' + error)
             console.error('Failed to create gig:', error);

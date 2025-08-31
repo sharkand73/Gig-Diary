@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import ServiceContainer from '../services/ServiceContainer';
 import { IGigService } from '../services/IGigService';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faList, faAdd } from '@fortawesome/free-solid-svg-icons';
 
 function New() {
 
@@ -47,7 +49,13 @@ function New() {
 
 
     return (
-        <div className='container mt-5 bg-light border-primary'>
+        <div className='container mt-5 pt-2 bg-light border-primary'>
+            <div className='navbar mb-2'>
+                <div className='navbar-Links ms-auto'>
+                    <Link to='/list' className='navbar-Link me-3' title="View gig list">
+                    <FontAwesomeIcon icon={faList} size="2x"/></Link>
+                </div>
+            </div>
             <div className='card shadow'>
                 <div className='card-body bg-light'>
 

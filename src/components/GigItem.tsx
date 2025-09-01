@@ -19,7 +19,7 @@ function GigItem({gig}: GigItemProps) {
 
     return (
         <Link to={`/edit/${gig.id}`} className='text-decoration-none'>
-            <div className='card mb-3 shadow-sm bg-light' style={{cursor: 'pointer'}}>
+            <div className='card mb-3 shadow-sm bg-light card-hover' style={{cursor: 'pointer'}}>
                 <div className='card-body'>
                     <div className='row align-items-center'>
                         <div className='col-3'>

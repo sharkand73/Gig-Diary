@@ -21,7 +21,7 @@ function Edit() {
             }
         };
         fetchGig();
-    }, [id]);
+    }, [id, gigService]);
 
     async function onDelete() {
         if (id) {

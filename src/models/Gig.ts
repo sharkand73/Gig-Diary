@@ -9,4 +9,12 @@ export interface Gig {
   postcode: string;
   instrument: 'Upright' | 'Electric';
   calendarSync: boolean;
+  isCash?: boolean;
+  datePaid?: string | null;
+  expenses?: number;
+  mileage?: number;
+  gigDate?: string;
+  isComplete?: boolean;
+  isFuture?: boolean;
+  isPaid?: boolean;
 }

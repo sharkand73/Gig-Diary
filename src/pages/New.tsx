@@ -3,7 +3,7 @@ import ServiceContainer from '../services/ServiceContainer';
 import { IGigService } from '../services/IGigService';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faList, faAdd } from '@fortawesome/free-solid-svg-icons';
+import { faList } from '@fortawesome/free-solid-svg-icons';
 
 function New() {
 

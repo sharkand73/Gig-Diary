@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import ServiceContainer from '../services/ServiceContainer';
 import { Gig } from '../models/Gig';
-import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faCancel, faList, faTrash } from '@fortawesome/free-solid-svg-icons';
 
@@ -10,11 +9,13 @@ function Edit() {
     const { id } = useParams();
     const [gig, setGig] = useState<Gig | null>(null);
     const [editing, setEditing] = useState<Boolean>(false);
-    
+    const [deleting, setDeleting] = useState<Boolean>(false);
+    const gigService = ServiceContainer.getGigService();
+    const navigate = useNavigate();
+
     useEffect(() => {
         const fetchGig = async () => {
             if (id) {
-                const gigService = ServiceContainer.getGigService();
                 const gigData = await gigService.getById(id);
                 setGig(gigData);
             }
@@ -22,25 +23,30 @@ function Edit() {
         fetchGig();
     }, [id]);
 
-    function onDelete(){
-        console.log('Delete!');
-    } 
+    async function onDelete() {
+        if (id) {
+            await gigService.delete(id);
+            setDeleting(false);
+            navigate('/list');
+        }
+    }
+    
 
     if (!gig) return <div>Loading...</div>;
     return (
         <div className='container mt-5 pt-2 bg-light border-primary'>
             <div className='navbar mb-2'>
                 <div className='navbar-Links ms-auto'>
-                    {editing ? 
-                        <button className='btn btn-link navbar-Link me-3' title="Delete gig" onClick={() => onDelete()}>
-                            <FontAwesomeIcon icon={faTrash} size="2x" style={{color: 'red'}}/>
-                        </button> : 
+                    {editing ?
+                        <button className='btn btn-link navbar-Link me-3' title="Delete gig" onClick={() => setDeleting(true)}>
+                            <FontAwesomeIcon icon={faTrash} size="2x" style={{ color: 'red' }} />
+                        </button> :
                         <Link to='/list' className='btn btn-link navbar-Link me-3' title="View gig list">
-                            <FontAwesomeIcon icon={faList} size="2x"/>
-                        </Link> 
+                            <FontAwesomeIcon icon={faList} size="2x" />
+                        </Link>
                     }
                     <button className='btn btn-link navbar-Link me-3' title={editing ? 'Cancel' : 'Edit gig'} onClick={() => setEditing(!editing)}>
-                        {editing ? <FontAwesomeIcon icon={faCancel} size="2x"/>: <FontAwesomeIcon icon={faEdit} size="2x"/>}
+                        {editing ? <FontAwesomeIcon icon={faCancel} size="2x" /> : <FontAwesomeIcon icon={faEdit} size="2x" />}
                     </button>
                 </div>
             </div>
@@ -114,6 +120,31 @@ function Edit() {
                     </form>
                 </div>
             </div>
+            {deleting && (
+                <div className="modal show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                    <div className="modal-dialog modal-dialog-centered">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">Confirm Delete</h5>
+                            </div>
+                            <div className="modal-body">
+                                <p>Are you sure you want to delete this gig? This action cannot be undone.</p>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" onClick={() => setDeleting(false)}>
+                                    Cancel
+                                </button>
+                                <button type="button" className="btn btn-danger" onClick={() => {
+                                    onDelete();
+                                }}>
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 }

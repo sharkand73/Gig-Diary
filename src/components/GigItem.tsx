@@ -1,21 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Gig } from '../models/Gig';
+import { formatDate } from '../utilities/common';
 
 interface GigItemProps {
     gig: Gig;
 }
 
 function GigItem({gig}: GigItemProps) {
-
-    const formatDate = (dateString: string) => {
-        return new Date(dateString).toLocaleDateString('en-GB', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
-        });
-    };
-
 
     return (
         <Link to={`/edit/${gig.id}`} className='text-decoration-none'>

@@ -1,5 +1,6 @@
 import { Gig } from '../models/Gig';
 import { IGigService } from './IGigService';
+import { formatDate } from '../utilities/common';
 
 class LocalGigService implements IGigService {
   private storageKey = 'gigs';
@@ -10,7 +11,15 @@ class LocalGigService implements IGigService {
       
       const newGig: Gig = {
         ...gig,
-        id: Date.now().toString()
+        id: Date.now().toString(),
+        isCash: false,
+        datePaid: null,
+        expenses: 0,
+        mileage: 0,
+        gigDate: formatDate(gig.leaveDate),
+        isComplete: false,
+        isFuture: false,
+        isPaid: false
       };
       
       const gigs = await this.getAll();

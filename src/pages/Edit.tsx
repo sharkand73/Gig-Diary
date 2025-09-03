@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import ServiceContainer from '../services/ServiceContainer';
 import { Gig } from '../models/Gig';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEdit, faCancel, faList, faTrash, faCheck } from '@fortawesome/free-solid-svg-icons';
+import NavBar from '../components/NavBar';
 import ConfirmDelete from '../components/ConfirmDelete';
 
 function Edit() {
@@ -121,39 +120,11 @@ function Edit() {
     if (!formData) return <div>Loading...</div>;
     return (
         <div className='container mt-5 pt-2 bg-light border-primary'>
-            <div className='navbar mb-2'>
-                <div className='navbar-Links ms-auto'>
-                    {editing ?
-                        <>
-                            <button className='btn btn-link navbar-Link me-3' title="Delete gig" onClick={() => setDeleting(true)}>
-                                <FontAwesomeIcon icon={faTrash} size="2x" style={{ color: 'red' }} />
-                            </button>
-                            <button className='btn btn-link navbar-Link me-3' title='Cancel' onClick={() => setEditing(false)}>
-                                <FontAwesomeIcon icon={faCancel} size="2x" />
-                            </button>
-                        </> :
-                        <>
-                            <Link to='/list' className='btn btn-link navbar-Link me-3' title="View gig list">
-                                <FontAwesomeIcon icon={faList} size="2x" />
-                            </Link>
-                            {completing ?
-                                <button className='btn btn-link navbar-Link me-3' title='Cancel' onClick={() => setCompleting(false)}>
-                                    <FontAwesomeIcon icon={faCancel} size="2x" />
-                                </button> :
-                                <>
-                                    <button className='btn btn-link navbar-Link me-3' title='Complete gig' onClick={() => setCompleting(true)}>
-                                        <FontAwesomeIcon icon={faCheck} size="2x" style={{ color: 'green' }} />
-                                    </button>
-                                    <button className='btn btn-link navbar-Link me-3' title='Edit gig' onClick={() => setEditing(true)}>
-                                        <FontAwesomeIcon icon={faEdit} size="2x" />
-                                    </button>
-                                </>
-                            }
-                        </>
-                    }
-
-                </div>
-            </div>
+            <NavBar editing={editing} setEditing={setEditing} completing={completing} setCompleting={setCompleting} deleting={deleting}
+            setDeleting={setDeleting} />
+            {deleting && 
+            <ConfirmDelete setDeleting={setDeleting} onDelete={onDelete}/>}
+     
             <div className='card shadow'>
                 {completing ?
                     <div className='card-body bg-light'>
@@ -273,7 +244,6 @@ function Edit() {
                     </div>
                 }
             </div>
-            {deleting && <ConfirmDelete setDeleting={setDeleting} onDelete={onDelete}/>}
 
         </div>
     );

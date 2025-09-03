@@ -8,6 +8,7 @@ import { faEdit, faCancel, faList, faTrash, faCheck } from '@fortawesome/free-so
 function Edit() {
     const { id } = useParams();
     const [gig, setGig] = useState<Gig | null>(null);
+    const [formData, setFormData] = useState<Gig | null>(null);
     const [editing, setEditing] = useState<boolean>(false);
     const [deleting, setDeleting] = useState<boolean>(false);
     const [completing, setCompleting] = useState<boolean>(false);
@@ -18,11 +19,14 @@ function Edit() {
         const fetchGig = async () => {
             if (id) {
                 const gigData = await gigService.getById(id);
-                setGig(gigData);
+                setGig(gigData ? {...gigData} : null);
+                setFormData(gigData ? {...gigData} : null);
             }
         };
         fetchGig();
     }, [id, gigService]);
+
+    useEffect(() => console.log(gig), [gig])
 
     async function onDelete() {
         if (id) {
@@ -32,31 +36,49 @@ function Edit() {
         }
     }
 
+    function resetPage() {
+        setCompleting(false);
+        setEditing(false);
+        setFormData(gig ? {...gig} : null);
+    }
+
     const nullableTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = e.target;
-        if (gig) {
-            setGig({ ...gig, [id]: value === '' ? null : value });
+        if (formData) {
+            setFormData({ ...formData, [id]: value === '' ? null : value });
         }
     }
 
     const nullableBoolChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { id, checked } = e.target;
-        if (gig) {
-            setGig({ ...gig, [id]: checked ? checked : false });
+        if (formData) {
+            setFormData({ ...formData, [id]: checked ?? false });
         }
     }
 
     const nullableNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = e.target;
-        if (gig) {
-            setGig({ ...gig, [id]: value ? value : 0 });
+        if (formData) {
+            setFormData({ ...formData, [id]: value ? value : 0 });
+        }
+    }
+
+    function onTextChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const { id, value } = e.target;
+        if (formData) {
+            setFormData({ ...formData, [id]: value });
+        }
+    }
+
+    function onCheckboxChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const { id, checked } = e.target;
+        if (formData){
+            setFormData({ ...formData, [id]: checked });
         }
     }
 
     
-
-
-    if (!gig) return <div>Loading...</div>;
+    if (!formData) return <div>Loading...</div>;
     return (
         <div className='container mt-5 pt-2 bg-light border-primary'>
             <div className='navbar mb-2'>
@@ -101,12 +123,12 @@ function Edit() {
                                 <div className='row'>
                                     <div className='col'>
                                         <label htmlFor='datePaid' className='form-label'>Date Paid</label>
-                                        <input type='text' className='form-control' id='datePaid' value={gig.datePaid ?? ''} placeholder='yyyy-MM-dd'
+                                        <input type='text' className='form-control' id='datePaid' value={formData.datePaid ?? ''} placeholder='yyyy-MM-dd'
                                         onChange={nullableTextChange} />
                                     </div>
                                     <div className='col-2 d-flex align-items-end'>
                                         <div className='form-check'>
-                                            <input className='form-check-input' type='checkbox' id='isCash' checked={gig.isCash ?? false} onChange={nullableBoolChange} />
+                                            <input className='form-check-input' type='checkbox' id='isCash' checked={formData.isCash ?? false} onChange={nullableBoolChange} />
                                             <label className='form-check-label' htmlFor='isCash'>Cash Payment</label>
                                         </div>
                                     </div>
@@ -117,7 +139,7 @@ function Edit() {
                                 <div className='row'>
                                     <div className='col-10'>
                                         <label htmlFor='expenses' className='form-label'>Expenses</label>
-                                        <input type='number' className='form-control' id='expenses' min={0} value={gig.expenses ?? 0} onChange={nullableNumberChange} />
+                                        <input type='number' className='form-control' id='expenses' min={0} value={formData.expenses ?? 0} onChange={nullableNumberChange} />
                                     </div>
                                 </div>
                             </div>
@@ -125,9 +147,14 @@ function Edit() {
                                 <div className='row'>
                                     <div className='col-10'>
                                         <label htmlFor='mileage' className='form-label'>Kilometres Driven</label>
-                                        <input type='number' className='form-control' id='mileage' min={0} value={gig.mileage ?? 0} onChange={nullableNumberChange} />
+                                        <input type='number' className='form-control' id='mileage' min={0} value={formData.mileage ?? 0} onChange={nullableNumberChange} />
                                     </div>
                                 </div>
+                            </div>
+
+                            <div className="text-end mt-4">
+                                <button type="button" className="btn btn-outline-secondary me-2" onClick={() => resetPage()}>Cancel</button>
+                                <button type="submit" className="btn btn-primary">Complete</button>
                             </div>
                         </form>
                     </div> :
@@ -139,11 +166,11 @@ function Edit() {
                                 <div className='row'>
                                     <div className='col'>
                                         <label htmlFor='act' className='form-label'>Act</label>
-                                        <input type='text' className='form-control' id='act' value={gig.act} disabled={!editing} />
+                                        <input type='text' className='form-control' id='act' value={formData.act} onChange={onTextChange} disabled={!editing} />
                                     </div>
                                     <div className='col'>
                                         <label htmlFor='fee' className='form-label'>Fee</label>
-                                        <input type='number' className='form-control' id='fee' min='0' max='2000' step='10' value={gig.fee} disabled={!editing} />
+                                        <input type='number' className='form-control' id='fee' min='0' max='2000' step='10' value={formData.fee} onChange={onTextChange} disabled={!editing} />
                                     </div>
                                 </div>
                             </div>
@@ -152,11 +179,11 @@ function Edit() {
                                 <div className='row'>
                                     <div className='col'>
                                         <label htmlFor='leaveDate' className='form-label'>Leave</label>
-                                        <input type='datetime-local' className='form-control' id='leaveDate' value={gig.leaveDate} disabled={!editing} />
+                                        <input type='datetime-local' className='form-control' id='leaveDate' value={formData.leaveDate} onChange={onTextChange} disabled={!editing} />
                                     </div>
                                     <div className='col'>
                                         <label htmlFor='returnDate' className='form-label'>Return</label>
-                                        <input type='datetime-local' className='form-control' id='returnDate' value={gig.returnDate} disabled={!editing} />
+                                        <input type='datetime-local' className='form-control' id='returnDate' value={formData.returnDate} onChange={onTextChange} disabled={!editing} />
                                     </div>
                                 </div>
                             </div>
@@ -165,37 +192,43 @@ function Edit() {
                                 <div className='row'>
                                     <div className='col'>
                                         <label htmlFor='venue' className='form-label'>Venue</label>
-                                        <input type='text' className='form-control' id='venue' value={gig.venue} disabled={!editing} />
+                                        <input type='text' className='form-control' id='venue' value={formData.venue} disabled={!editing} />
                                     </div>
                                     <div className='col'>
                                         <label htmlFor='postcode' className='form-label'>Postcode</label>
-                                        <input type='text' className='form-control' id='postcode' value={gig.postcode} disabled={!editing} />
+                                        <input type='text' className='form-control' id='postcode' value={formData.postcode} disabled={!editing} />
                                     </div>
                                 </div>
                             </div>
 
                             <div className='mb-4'>
                                 <label htmlFor='description' className='form-label'>Description</label>
-                                <textarea className='form-control' id='description' rows={6} value={gig.description} disabled={!editing} />
+                                <textarea className='form-control' id='description' rows={6} value={formData.description} disabled={!editing} />
                             </div>
 
                             <div className='mb-4'>
                                 <div className='row'>
                                     <div className='col-9'>
                                         <label htmlFor='instrument' className='form-label'>Instrument</label>
-                                        <select className='form-control' id='instrument' value={gig.instrument} disabled={!editing}>
+                                        <select className='form-control' id='instrument' value={formData.instrument} disabled={!editing}>
                                             <option value='Upright'>Upright</option>
                                             <option value='Electric'>Electric</option>
                                         </select>
                                     </div>
                                     <div className='col-3 d-flex align-items-end'>
                                         <div className='form-check form-switch'>
-                                            <input className='form-check-input' type='checkbox' id='calendarSync' checked={gig.calendarSync} disabled={!editing} />
+                                            <input className='form-check-input' type='checkbox' id='calendarSync' checked={formData.calendarSync} disabled={!editing} />
                                             <label className='form-check-label' htmlFor='calendarSync'>Calendar Sync</label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            {editing &&
+                                <div className="text-end mt-4">
+                                    <button type="button" className="btn btn-outline-secondary me-2" onClick={() => navigate(`/list`)}>Cancel</button>
+                                    <button type="submit" className="btn btn-primary">Submit</button>
+                                </div>
+                            }
                         </form>
                     </div>
                 }

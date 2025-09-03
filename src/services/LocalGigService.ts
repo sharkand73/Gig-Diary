@@ -18,7 +18,7 @@ class LocalGigService implements IGigService {
         mileage: 0,
         gigDate: formatDate(gig.leaveDate),
         isComplete: false,
-        isFuture: false,
+        isFuture: new Date(gig.leaveDate) > new Date(),
         isPaid: false
       };
       
@@ -35,35 +35,50 @@ class LocalGigService implements IGigService {
       if (signal?.aborted) throw new Error('Operation aborted');
       
       const data = localStorage.getItem(this.storageKey);
-      return data ? JSON.parse(data) : [];
+      const allGigs = data ? JSON.parse(data) : [];
+      return allGigs.map((gig: Gig) => ({ ...gig, isFuture: new Date(gig.leaveDate) > new Date() }));
     }, signal);
   }
 
-  async getById(id: string): Promise<Gig | null> {
-    const gigs = await this.getAll();
-    return gigs.find(gig => gig.id === id) || null;
+  async getById(id: string, signal?: AbortSignal): Promise<Gig | null> {
+    return this.withTimeout(async () => {
+      if (signal?.aborted) throw new Error('Operation aborted');
+      
+      const data = localStorage.getItem(this.storageKey);
+      const gigs: Gig[] = data ? JSON.parse(data) : [];
+      const gig = gigs.find(g => g.id === id);
+      return gig ? {...gig, isFuture: new Date(gig.leaveDate) > new Date()} : null;
+    }, signal);
   }
 
-  async update(id: string, updatedGig: Omit<Gig, 'id'>): Promise<Gig | null> {
-    const gigs = await this.getAll();
-    const index = gigs.findIndex(gig => gig.id === id);
-    
-    if (index === -1) return null;
-    
-    gigs[index] = { ...updatedGig, id };
-    localStorage.setItem(this.storageKey, JSON.stringify(gigs));
-    
-    return gigs[index];
+  async update(id: string, updatedGig: Omit<Gig, 'id'>, signal?: AbortSignal): Promise<Gig | null> {
+    return this.withTimeout(async () => {
+      if (signal?.aborted) throw new Error('Operation aborted');
+      
+      const gigs = await this.getAll();
+      const index = gigs.findIndex(gig => gig.id === id);
+      
+      if (index === -1) return null;
+      
+      gigs[index] = { ...updatedGig, id };
+      localStorage.setItem(this.storageKey, JSON.stringify(gigs));
+      
+      return gigs[index];
+    }, signal);
   }
 
-  async delete(id: string): Promise<boolean> {
-    const gigs = await this.getAll();
-    const filteredGigs = gigs.filter(gig => gig.id !== id);
-    
-    if (filteredGigs.length === gigs.length) return false;
-    
-    localStorage.setItem(this.storageKey, JSON.stringify(filteredGigs));
-    return true;
+  async delete(id: string, signal?: AbortSignal): Promise<boolean> {
+    return this.withTimeout(async () => {
+      if (signal?.aborted) throw new Error('Operation aborted');
+      
+      const gigs = await this.getAll();
+      const filteredGigs = gigs.filter(gig => gig.id !== id);
+      
+      if (filteredGigs.length === gigs.length) return false;
+      
+      localStorage.setItem(this.storageKey, JSON.stringify(filteredGigs));
+      return true;
+    }, signal);
   }
 
   private async withTimeout<T>(operation: () => Promise<T>, signal?: AbortSignal, timeoutMs = 5000): Promise<T> {

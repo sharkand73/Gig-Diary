@@ -13,8 +13,8 @@ export interface Gig {
   datePaid?: string | null;
   expenses?: number;
   mileage?: number;
-  gigDate?: string;
   isComplete?: boolean;
+  gigDate?: string; 
   isFuture?: boolean;
   isPaid?: boolean;
 }

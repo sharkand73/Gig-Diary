@@ -26,7 +26,7 @@ function Edit() {
         fetchGig();
     }, [id, gigService]);
 
-    useEffect(() => console.log(gig), [gig])
+    //useEffect(() => console.log(gig), [gig])
 
     async function onDelete() {
         if (id) {
@@ -63,7 +63,7 @@ function Edit() {
         }
     }
 
-    function onTextChange(e: React.ChangeEvent<HTMLInputElement>) {
+    function onTextChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
         const { id, value } = e.target;
         if (formData) {
             setFormData({ ...formData, [id]: value });
@@ -74,6 +74,45 @@ function Edit() {
         const { id, checked } = e.target;
         if (formData){
             setFormData({ ...formData, [id]: checked });
+        }
+    }
+
+    async function onEditSubmit(e: any){
+        if (!id) return;
+        e.preventDefault();
+
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
+
+        try {
+            const newGig = await gigService.update(id, formData as any, controller.signal);
+            console.log('Updated gig:', newGig);
+            clearTimeout(timeoutId);
+            navigate('/list');
+
+        } catch (error) {
+            alert('Failed to update gig: ' + error)
+            console.error('Failed to update gig:', error);
+        }
+    }
+
+    async function onCompleteSubmit(e: any){
+        if (!id) return;
+        e.preventDefault();
+
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3000);
+
+        try {
+            const updatedFormData = {...formData, isComplete: true};
+            const newGig = await gigService.update(id, updatedFormData as any, controller.signal);
+            console.log('Updated gig:', newGig);
+            clearTimeout(timeoutId);
+            navigate('/list');
+
+        } catch (error) {
+            alert('Failed to complete gig: ' + error)
+            console.error('Failed to complete gig:', error);
         }
     }
 
@@ -118,7 +157,7 @@ function Edit() {
                 {completing ?
                     <div className='card-body bg-light'>
                         <h1 className='mb-5'>Complete gig</h1>
-                        <form>
+                        <form onSubmit={onCompleteSubmit}>
                             <div className='mb-4'>
                                 <div className='row'>
                                     <div className='col'>
@@ -161,7 +200,7 @@ function Edit() {
 
                     <div className='card-body bg-light'>
                         <h1 className='mb-5'>Gig Details</h1>
-                        <form>
+                        <form onSubmit={onEditSubmit}>
                             <div className='mb-4'>
                                 <div className='row'>
                                     <div className='col'>
@@ -170,7 +209,7 @@ function Edit() {
                                     </div>
                                     <div className='col'>
                                         <label htmlFor='fee' className='form-label'>Fee</label>
-                                        <input type='number' className='form-control' id='fee' min='0' max='2000' step='10' value={formData.fee} onChange={onTextChange} disabled={!editing} />
+                                        <input type='number' className='form-control' id='fee' min='0' max='2000' value={formData.fee} onChange={onTextChange} disabled={!editing} />
                                     </div>
                                 </div>
                             </div>
@@ -192,32 +231,32 @@ function Edit() {
                                 <div className='row'>
                                     <div className='col'>
                                         <label htmlFor='venue' className='form-label'>Venue</label>
-                                        <input type='text' className='form-control' id='venue' value={formData.venue} disabled={!editing} />
+                                        <input type='text' className='form-control' id='venue' value={formData.venue} onChange={onTextChange} disabled={!editing} />
                                     </div>
                                     <div className='col'>
                                         <label htmlFor='postcode' className='form-label'>Postcode</label>
-                                        <input type='text' className='form-control' id='postcode' value={formData.postcode} disabled={!editing} />
+                                        <input type='text' className='form-control' id='postcode' value={formData.postcode} onChange={onTextChange} disabled={!editing} />
                                     </div>
                                 </div>
                             </div>
 
                             <div className='mb-4'>
                                 <label htmlFor='description' className='form-label'>Description</label>
-                                <textarea className='form-control' id='description' rows={6} value={formData.description} disabled={!editing} />
+                                <textarea className='form-control' id='description' rows={6} value={formData.description} onChange={onTextChange} disabled={!editing} />
                             </div>
 
                             <div className='mb-4'>
                                 <div className='row'>
                                     <div className='col-9'>
                                         <label htmlFor='instrument' className='form-label'>Instrument</label>
-                                        <select className='form-control' id='instrument' value={formData.instrument} disabled={!editing}>
+                                        <select className='form-control' id='instrument' value={formData.instrument} onChange={onTextChange} disabled={!editing}>
                                             <option value='Upright'>Upright</option>
                                             <option value='Electric'>Electric</option>
                                         </select>
                                     </div>
                                     <div className='col-3 d-flex align-items-end'>
                                         <div className='form-check form-switch'>
-                                            <input className='form-check-input' type='checkbox' id='calendarSync' checked={formData.calendarSync} disabled={!editing} />
+                                            <input className='form-check-input' type='checkbox' id='calendarSync' checked={formData.calendarSync} onChange={onCheckboxChange} disabled={!editing} />
                                             <label className='form-check-label' htmlFor='calendarSync'>Calendar Sync</label>
                                         </div>
                                     </div>

@@ -3,6 +3,7 @@ import { IGigService } from '../services/IGigService';
 import ServiceContainer from '../services/ServiceContainer';
 import { Gig } from '../models/Gig';
 import GigItem from '../components/GigItem';
+import Loading from '../components/Loading';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAdd } from '@fortawesome/free-solid-svg-icons';
@@ -20,6 +21,8 @@ function List() {
         };
         fetchGigs();
     }, []);
+
+    if (!gigs || gigs.length === 0) return <Loading />
 
     return (
         <div className='container mt-5 pt-2 bg-light border-primary'>

@@ -59,7 +59,7 @@ function New() {
             <div className='card shadow'>
                 <div className='card-body bg-light'>
 
-                    <h1 className='mb-5'>Enter Gig Details</h1>
+                    <h1 className='mb-5'>New Gig Details</h1>
 
                     <form onSubmit={handleSubmit}>
                         <div className='mb-4'>

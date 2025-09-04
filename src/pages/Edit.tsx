@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ServiceContainer from '../services/ServiceContainer';
 import { Gig } from '../models/Gig';
+import Loading from '../components/Loading';
 import NavBar from '../components/NavBar';
 import ConfirmDelete from '../components/ConfirmDelete';
 
@@ -25,8 +26,6 @@ function Edit() {
         };
         fetchGig();
     }, [id, gigService]);
-
-    //useEffect(() => console.log(gig), [gig])
 
     async function onDelete() {
         if (id) {
@@ -117,7 +116,8 @@ function Edit() {
     }
 
     
-    if (!formData) return <div>Loading...</div>;
+    if (!formData) return <Loading />
+
     return (
         <div className='container mt-5 pt-2 bg-light border-primary'>
             <NavBar editing={editing} setEditing={setEditing} completing={completing} setCompleting={setCompleting} deleting={deleting}

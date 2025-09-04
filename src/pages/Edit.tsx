@@ -5,6 +5,7 @@ import { Gig } from '../models/Gig';
 import Loading from '../components/Loading';
 import NavBar from '../components/NavBar';
 import ConfirmDelete from '../components/ConfirmDelete';
+import CompleteForm from '../components/CompleteForm';
 
 function Edit() {
     const { id } = useParams();
@@ -127,48 +128,14 @@ function Edit() {
      
             <div className='card shadow'>
                 {completing ?
-                    <div className='card-body bg-light'>
-                        <h1 className='mb-5'>Complete gig</h1>
-                        <form onSubmit={onCompleteSubmit}>
-                            <div className='mb-4'>
-                                <div className='row'>
-                                    <div className='col'>
-                                        <label htmlFor='datePaid' className='form-label'>Date Paid</label>
-                                        <input type='text' className='form-control' id='datePaid' value={formData.datePaid ?? ''} placeholder='yyyy-MM-dd'
-                                        onChange={nullableTextChange} />
-                                    </div>
-                                    <div className='col-2 d-flex align-items-end'>
-                                        <div className='form-check'>
-                                            <input className='form-check-input' type='checkbox' id='isCash' checked={formData.isCash ?? false} onChange={nullableBoolChange} />
-                                            <label className='form-check-label' htmlFor='isCash'>Cash Payment</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className='mb-4'>
-                                <div className='row'>
-                                    <div className='col-10'>
-                                        <label htmlFor='expenses' className='form-label'>Expenses</label>
-                                        <input type='number' className='form-control' id='expenses' min={0} value={formData.expenses ?? 0} onChange={nullableNumberChange} />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className='mb-4'>
-                                <div className='row'>
-                                    <div className='col-10'>
-                                        <label htmlFor='mileage' className='form-label'>Kilometres Driven</label>
-                                        <input type='number' className='form-control' id='mileage' min={0} value={formData.mileage ?? 0} onChange={nullableNumberChange} />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="text-end mt-4">
-                                <button type="button" className="btn btn-outline-secondary me-2" onClick={() => resetPage()}>Cancel</button>
-                                <button type="submit" className="btn btn-primary">Complete</button>
-                            </div>
-                        </form>
-                    </div> :
+                    <CompleteForm 
+                    formData={formData}
+                    onCompleteSubmit={onCompleteSubmit}
+                    nullableTextChange={nullableTextChange}
+                    nullableBoolChange={nullableBoolChange}
+                    nullableNumberChange={nullableNumberChange}
+                    resetPage={resetPage}
+                />:
 
                     <div className='card-body bg-light'>
                         <h1 className='mb-5'>Gig Details</h1>

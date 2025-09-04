@@ -10,7 +10,7 @@ import { faAdd } from '@fortawesome/free-solid-svg-icons';
 
 function List() {
 
-    const [gigs, setGigs] = useState<Gig[]>([]);
+    const [gigs, setGigs] = useState<Gig[] | null>(null);
 
     const gigService: IGigService = ServiceContainer.getGigService();
 

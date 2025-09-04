@@ -38,88 +38,8 @@ function Edit() {
         }
     }
 
-    function resetPage() {
-        setCompleting(false);
-        setEditing(false);
-        setFormData(gig ? {...gig} : null);
-    }
-
-    const nullableTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { id, value } = e.target;
-        if (formData) {
-            setFormData({ ...formData, [id]: value === '' ? null : value });
-        }
-    }
-
-    const nullableBoolChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { id, checked } = e.target;
-        if (formData) {
-            setFormData({ ...formData, [id]: checked ?? false });
-        }
-    }
-
-    const nullableNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { id, value } = e.target;
-        if (formData) {
-            setFormData({ ...formData, [id]: value ? value : 0 });
-        }
-    }
-
-    function onTextChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
-        const { id, value } = e.target;
-        if (formData) {
-            setFormData({ ...formData, [id]: value });
-        }
-    }
-
-    function onCheckboxChange(e: React.ChangeEvent<HTMLInputElement>) {
-        const { id, checked } = e.target;
-        if (formData){
-            setFormData({ ...formData, [id]: checked });
-        }
-    }
-
-    async function onEditSubmit(e: any){
-        if (!id) return;
-        e.preventDefault();
-
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
-
-        try {
-            const newGig = await gigService.update(id, formData as any, controller.signal);
-            console.log('Updated gig:', newGig);
-            clearTimeout(timeoutId);
-            navigate('/list');
-
-        } catch (error) {
-            alert('Failed to update gig: ' + error)
-            console.error('Failed to update gig:', error);
-        }
-    }
-
-    async function onCompleteSubmit(e: any){
-        if (!id) return;
-        e.preventDefault();
-
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3000);
-
-        try {
-            const updatedFormData = {...formData, isComplete: true};
-            const newGig = await gigService.update(id, updatedFormData as any, controller.signal);
-            console.log('Updated gig:', newGig);
-            clearTimeout(timeoutId);
-            navigate('/list');
-
-        } catch (error) {
-            alert('Failed to complete gig: ' + error)
-            console.error('Failed to complete gig:', error);
-        }
-    }
-
     
-    if (!formData) return <Loading />
+    if (!formData || !gig) return <Loading />
 
     return (
         <div className='container mt-5 pt-2 bg-light border-primary'>
@@ -142,20 +62,19 @@ function Edit() {
             <div className='card shadow'>
                 {completing ?
                     <CompleteForm 
+                    id={id}
+                    gig={gig}
                     formData={formData}
-                    onCompleteSubmit={onCompleteSubmit}
-                    nullableTextChange={nullableTextChange}
-                    nullableBoolChange={nullableBoolChange}
-                    nullableNumberChange={nullableNumberChange}
-                    resetPage={resetPage}
+                    setFormData={setFormData}
+                    setCompleting={setCompleting}
+                    setEditing={setEditing}
                     />:
 
                     <EditForm
+                    id={id}
                     formData={formData}
+                    setFormData={setFormData}
                     editing={editing}
-                    onEditSubmit={onEditSubmit}
-                    onTextChange={onTextChange}
-                    onCheckboxChange={onCheckboxChange}
                     />
                 }
             </div>

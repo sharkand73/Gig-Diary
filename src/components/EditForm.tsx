@@ -1,18 +1,52 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Gig } from '../models/Gig'
+import ServiceContainer from '../services/ServiceContainer'
 
 interface Props {
+    id: string | undefined
     editing: boolean
     formData: Gig
-    onTextChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void
-    onCheckboxChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-    onEditSubmit: (e: any) => void
+    setFormData: React.Dispatch<React.SetStateAction<Gig | null>>
 }
 
 function EditForm(props: Props) {
-    const { editing, formData, onTextChange, onCheckboxChange, onEditSubmit } = props;
+    const { id, editing, formData, setFormData } = props;
     const navigate = useNavigate();
+
+    function onTextChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
+        const { id, value } = e.target;
+        if (formData) {
+            setFormData({ ...formData, [id]: value });
+        }
+    }
+
+    function onCheckboxChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const { id, checked } = e.target;
+        if (formData){
+            setFormData({ ...formData, [id]: checked });
+        }
+    }
+
+    async function onEditSubmit(e: any){
+        if (!id) return;
+        e.preventDefault();
+
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
+
+        try {
+            const gigService = ServiceContainer.getGigService();
+            const newGig = await gigService.update(id, formData as any, controller.signal);
+            console.log('Updated gig:', newGig);
+            clearTimeout(timeoutId);
+            navigate('/list');
+
+        } catch (error) {
+            alert('Failed to update gig: ' + error)
+            console.error('Failed to update gig:', error);
+        }
+    }
 
     return (
         <div className='card-body bg-light'>

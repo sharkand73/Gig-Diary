@@ -1,0 +1,93 @@
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Gig } from '../models/Gig'
+
+interface Props {
+    editing: boolean
+    formData: Gig
+    onTextChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void
+    onCheckboxChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+    onEditSubmit: (e: any) => void
+}
+
+function EditForm(props: Props) {
+    const { editing, formData, onTextChange, onCheckboxChange, onEditSubmit } = props;
+    const navigate = useNavigate();
+
+    return (
+        <div className='card-body bg-light'>
+            <h1 className='mb-5'>Gig Details</h1>
+            <form onSubmit={onEditSubmit}>
+                <div className='mb-4'>
+                    <div className='row'>
+                        <div className='col'>
+                            <label htmlFor='act' className='form-label'>Act</label>
+                            <input type='text' className='form-control' id='act' value={formData.act} onChange={onTextChange} disabled={!editing} />
+                        </div>
+                        <div className='col'>
+                            <label htmlFor='fee' className='form-label'>Fee</label>
+                            <input type='number' className='form-control' id='fee' min='0' max='2000' value={formData.fee} onChange={onTextChange} disabled={!editing} />
+                        </div>
+                    </div>
+                </div>
+
+                <div className='mb-4'>
+                    <div className='row'>
+                        <div className='col'>
+                            <label htmlFor='leaveDate' className='form-label'>Leave</label>
+                            <input type='datetime-local' className='form-control' id='leaveDate' value={formData.leaveDate} onChange={onTextChange} disabled={!editing} />
+                        </div>
+                        <div className='col'>
+                            <label htmlFor='returnDate' className='form-label'>Return</label>
+                            <input type='datetime-local' className='form-control' id='returnDate' value={formData.returnDate} onChange={onTextChange} disabled={!editing} />
+                        </div>
+                    </div>
+                </div>
+
+                <div className='mb-4'>
+                    <div className='row'>
+                        <div className='col'>
+                            <label htmlFor='venue' className='form-label'>Venue</label>
+                            <input type='text' className='form-control' id='venue' value={formData.venue} onChange={onTextChange} disabled={!editing} />
+                        </div>
+                        <div className='col'>
+                            <label htmlFor='postcode' className='form-label'>Postcode</label>
+                            <input type='text' className='form-control' id='postcode' value={formData.postcode} onChange={onTextChange} disabled={!editing} />
+                        </div>
+                    </div>
+                </div>
+
+                <div className='mb-4'>
+                    <label htmlFor='description' className='form-label'>Description</label>
+                    <textarea className='form-control' id='description' rows={6} value={formData.description} onChange={onTextChange} disabled={!editing} />
+                </div>
+
+                <div className='mb-4'>
+                    <div className='row'>
+                        <div className='col-9'>
+                            <label htmlFor='instrument' className='form-label'>Instrument</label>
+                            <select className='form-control' id='instrument' value={formData.instrument} onChange={onTextChange} disabled={!editing}>
+                                <option value='Upright'>Upright</option>
+                                <option value='Electric'>Electric</option>
+                            </select>
+                        </div>
+                        <div className='col-3 d-flex align-items-end'>
+                            <div className='form-check form-switch'>
+                                <input className='form-check-input' type='checkbox' id='calendarSync' checked={formData.calendarSync} onChange={onCheckboxChange} disabled={!editing} />
+                                <label className='form-check-label' htmlFor='calendarSync'>Calendar Sync</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {editing &&
+                    <div className="text-end mt-4">
+                        <button type="button" className="btn btn-outline-secondary me-2" onClick={() => navigate(`/list`)}>Cancel</button>
+                        <button type="submit" className="btn btn-primary">Submit</button>
+                    </div>
+                }
+            </form>
+        </div>
+    )
+}
+
+export default EditForm;

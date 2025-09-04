@@ -6,6 +6,8 @@ import Loading from '../components/Loading';
 import NavBar from '../components/NavBar';
 import ConfirmDelete from '../components/ConfirmDelete';
 import CompleteForm from '../components/CompleteForm';
+import EditForm from '../components/EditForm';
+
 
 function Edit() {
     const { id } = useParams();
@@ -121,10 +123,21 @@ function Edit() {
 
     return (
         <div className='container mt-5 pt-2 bg-light border-primary'>
-            <NavBar editing={editing} setEditing={setEditing} completing={completing} setCompleting={setCompleting} deleting={deleting}
-            setDeleting={setDeleting} />
+
+            <NavBar 
+            editing={editing} 
+            setEditing={setEditing} 
+            completing={completing} 
+            setCompleting={setCompleting} 
+            deleting={deleting}
+            setDeleting={setDeleting} 
+            />
+
             {deleting && 
-            <ConfirmDelete setDeleting={setDeleting} onDelete={onDelete}/>}
+            <ConfirmDelete 
+            setDeleting={setDeleting} 
+            onDelete={onDelete}
+            />}
      
             <div className='card shadow'>
                 {completing ?
@@ -135,83 +148,17 @@ function Edit() {
                     nullableBoolChange={nullableBoolChange}
                     nullableNumberChange={nullableNumberChange}
                     resetPage={resetPage}
-                />:
+                    />:
 
-                    <div className='card-body bg-light'>
-                        <h1 className='mb-5'>Gig Details</h1>
-                        <form onSubmit={onEditSubmit}>
-                            <div className='mb-4'>
-                                <div className='row'>
-                                    <div className='col'>
-                                        <label htmlFor='act' className='form-label'>Act</label>
-                                        <input type='text' className='form-control' id='act' value={formData.act} onChange={onTextChange} disabled={!editing} />
-                                    </div>
-                                    <div className='col'>
-                                        <label htmlFor='fee' className='form-label'>Fee</label>
-                                        <input type='number' className='form-control' id='fee' min='0' max='2000' value={formData.fee} onChange={onTextChange} disabled={!editing} />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className='mb-4'>
-                                <div className='row'>
-                                    <div className='col'>
-                                        <label htmlFor='leaveDate' className='form-label'>Leave</label>
-                                        <input type='datetime-local' className='form-control' id='leaveDate' value={formData.leaveDate} onChange={onTextChange} disabled={!editing} />
-                                    </div>
-                                    <div className='col'>
-                                        <label htmlFor='returnDate' className='form-label'>Return</label>
-                                        <input type='datetime-local' className='form-control' id='returnDate' value={formData.returnDate} onChange={onTextChange} disabled={!editing} />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className='mb-4'>
-                                <div className='row'>
-                                    <div className='col'>
-                                        <label htmlFor='venue' className='form-label'>Venue</label>
-                                        <input type='text' className='form-control' id='venue' value={formData.venue} onChange={onTextChange} disabled={!editing} />
-                                    </div>
-                                    <div className='col'>
-                                        <label htmlFor='postcode' className='form-label'>Postcode</label>
-                                        <input type='text' className='form-control' id='postcode' value={formData.postcode} onChange={onTextChange} disabled={!editing} />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className='mb-4'>
-                                <label htmlFor='description' className='form-label'>Description</label>
-                                <textarea className='form-control' id='description' rows={6} value={formData.description} onChange={onTextChange} disabled={!editing} />
-                            </div>
-
-                            <div className='mb-4'>
-                                <div className='row'>
-                                    <div className='col-9'>
-                                        <label htmlFor='instrument' className='form-label'>Instrument</label>
-                                        <select className='form-control' id='instrument' value={formData.instrument} onChange={onTextChange} disabled={!editing}>
-                                            <option value='Upright'>Upright</option>
-                                            <option value='Electric'>Electric</option>
-                                        </select>
-                                    </div>
-                                    <div className='col-3 d-flex align-items-end'>
-                                        <div className='form-check form-switch'>
-                                            <input className='form-check-input' type='checkbox' id='calendarSync' checked={formData.calendarSync} onChange={onCheckboxChange} disabled={!editing} />
-                                            <label className='form-check-label' htmlFor='calendarSync'>Calendar Sync</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {editing &&
-                                <div className="text-end mt-4">
-                                    <button type="button" className="btn btn-outline-secondary me-2" onClick={() => navigate(`/list`)}>Cancel</button>
-                                    <button type="submit" className="btn btn-primary">Submit</button>
-                                </div>
-                            }
-                        </form>
-                    </div>
+                    <EditForm
+                    formData={formData}
+                    editing={editing}
+                    onEditSubmit={onEditSubmit}
+                    onTextChange={onTextChange}
+                    onCheckboxChange={onCheckboxChange}
+                    />
                 }
             </div>
-
         </div>
     );
 }

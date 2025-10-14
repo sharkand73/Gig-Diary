@@ -17,7 +17,9 @@ function New() {
         venue: '',
         postcode: '',
         instrument: 'Upright',
-        calendarSync: false
+        calendarSync: false,
+        bookingDate: new Date().toISOString().slice(0, 10),
+        contact: ''
     });
 
     async function handleSubmit(e: any) {
@@ -101,6 +103,19 @@ function New() {
                                 <div className='col'>
                                     <label htmlFor='postcode' className='form-label'>Postcode</label>
                                     <input type='text' className='form-control' id='postcode' value={formData.postcode} onChange={onTextChange} />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className='mb-4'>
+                            <div className='row'>
+                                <div className='col'>
+                                    <label htmlFor='bookingDate' className='form-label'>Booking Date</label>
+                                    <input type='date' className='form-control' id='bookingDate' value={formData.bookingDate} onChange={onTextChange} required />
+                                </div>
+                                <div className='col'>
+                                    <label htmlFor='contact' className='form-label'>Contact</label>
+                                    <input type='text' className='form-control' id='contact' value={formData.contact} onChange={onTextChange} required />
                                 </div>
                             </div>
                         </div>

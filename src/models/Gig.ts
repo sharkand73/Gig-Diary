@@ -8,6 +8,8 @@ export interface Gig {
   venue: string;
   postcode: string;
   instrument: 'Upright' | 'Electric';
+  bookingDate: string;
+  contact: string;
   calendarSync: boolean;
   isCash?: boolean;
   datePaid?: string | null;

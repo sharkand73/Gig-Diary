@@ -99,6 +99,19 @@ function EditForm(props: Props) {
                 </div>
 
                 <div className='mb-4'>
+                    <div className='row'>
+                        <div className='col'>
+                            <label htmlFor='bookingDate' className='form-label'>Booking Date</label>
+                            <input type='date' className='form-control' id='bookingDate' value={formData.bookingDate || ''} onChange={onTextChange} disabled={!editing} required />
+                        </div>
+                        <div className='col'>
+                            <label htmlFor='contact' className='form-label'>Contact</label>
+                            <input type='text' className='form-control' id='contact' value={formData.contact || ''} onChange={onTextChange} disabled={!editing} required />
+                        </div>
+                    </div>
+                </div>
+
+                <div className='mb-4'>
                     <label htmlFor='description' className='form-label'>Description</label>
                     <textarea className='form-control' id='description' rows={6} value={formData.description} onChange={onTextChange} disabled={!editing} />
                 </div>

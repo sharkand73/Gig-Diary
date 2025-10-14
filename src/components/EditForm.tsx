@@ -61,11 +61,11 @@ function EditForm(props: Props) {
             <form onSubmit={onEditSubmit}>
                 <div className='mb-4'>
                     <div className='row'>
-                        <div className='col'>
+                        <div className='col-12 col-md-6'>
                             <label htmlFor='act' className='form-label'>Act</label>
                             <input type='text' className='form-control' id='act' value={formData.act} onChange={onTextChange} disabled={!editing} />
                         </div>
-                        <div className='col'>
+                        <div className='col-12 col-md-6'>
                             <label htmlFor='fee' className='form-label'>Fee</label>
                             <input type='number' className='form-control' id='fee' min='0' max='2000' value={formData.fee} onChange={onNumberChange} disabled={!editing} />
                         </div>
@@ -74,11 +74,11 @@ function EditForm(props: Props) {
 
                 <div className='mb-4'>
                     <div className='row'>
-                        <div className='col'>
+                        <div className='col-12 col-md-6'>
                             <label htmlFor='leaveDate' className='form-label'>Leave</label>
                             <input type='datetime-local' className='form-control' id='leaveDate' value={formData.leaveDate ? new Date(formData.leaveDate).toISOString().slice(0, 16) : ''} onChange={onTextChange} disabled={!editing} />
                         </div>
-                        <div className='col'>
+                        <div className='col-12 col-md-6'>
                             <label htmlFor='returnDate' className='form-label'>Return</label>
                             <input type='datetime-local' className='form-control' id='returnDate' value={formData.returnDate ? new Date(formData.returnDate).toISOString().slice(0, 16) : ''} onChange={onTextChange} disabled={!editing} />
                         </div>
@@ -87,11 +87,11 @@ function EditForm(props: Props) {
 
                 <div className='mb-4'>
                     <div className='row'>
-                        <div className='col'>
+                        <div className='col-12 col-md-6'>
                             <label htmlFor='venue' className='form-label'>Venue</label>
                             <input type='text' className='form-control' id='venue' value={formData.venue} onChange={onTextChange} disabled={!editing} />
                         </div>
-                        <div className='col'>
+                        <div className='col-12 col-md-6'>
                             <label htmlFor='postcode' className='form-label'>Postcode</label>
                             <input type='text' className='form-control' id='postcode' value={formData.postcode} onChange={onTextChange} disabled={!editing} />
                         </div>
@@ -100,11 +100,11 @@ function EditForm(props: Props) {
 
                 <div className='mb-4'>
                     <div className='row'>
-                        <div className='col'>
+                        <div className='col-12 col-md-6'>
                             <label htmlFor='bookingDate' className='form-label'>Booking Date</label>
                             <input type='date' className='form-control' id='bookingDate' value={formData.bookingDate || ''} onChange={onTextChange} disabled={!editing} required />
                         </div>
-                        <div className='col'>
+                        <div className='col-12 col-md-6'>
                             <label htmlFor='contact' className='form-label'>Contact</label>
                             <input type='text' className='form-control' id='contact' value={formData.contact || ''} onChange={onTextChange} disabled={!editing} required />
                         </div>
@@ -118,14 +118,14 @@ function EditForm(props: Props) {
 
                 <div className='mb-4'>
                     <div className='row'>
-                        <div className='col-9'>
+                        <div className='col-12 col-md-9'>
                             <label htmlFor='instrument' className='form-label'>Instrument</label>
                             <select className='form-control' id='instrument' value={formData.instrument} onChange={onTextChange} disabled={!editing}>
                                 <option value='Upright'>Upright</option>
                                 <option value='Electric'>Electric</option>
                             </select>
                         </div>
-                        <div className='col-3 d-flex align-items-end'>
+                        <div className='col-12 col-md-3 d-flex align-items-end'>
                             <div className='form-check form-switch'>
                                 <input className='form-check-input' type='checkbox' id='calendarSync' checked={formData.calendarSync} onChange={onCheckboxChange} disabled={!editing} />
                                 <label className='form-check-label' htmlFor='calendarSync'>Calendar Sync</label>

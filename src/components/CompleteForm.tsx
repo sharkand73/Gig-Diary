@@ -70,12 +70,12 @@ function CompleteForm(props: Props) {
             <form onSubmit={onCompleteSubmit}>
                 <div className='mb-4'>
                     <div className='row'>
-                        <div className='col'>
+                        <div className='col-12 col-md-10'>
                             <label htmlFor='datePaid' className='form-label'>Date Paid</label>
                             <input type='text' className='form-control' id='datePaid' value={formData.datePaid ?? ''} placeholder='yyyy-MM-dd'
                                 onChange={nullableTextChange} />
                         </div>
-                        <div className='col-2 d-flex align-items-end'>
+                        <div className='col-12 col-md-2 d-flex align-items-end'>
                             <div className='form-check'>
                                 <input className='form-check-input' type='checkbox' id='isCash' checked={formData.isCash ?? false} onChange={nullableBoolChange} />
                                 <label className='form-check-label' htmlFor='isCash'>Cash Payment</label>
@@ -86,7 +86,7 @@ function CompleteForm(props: Props) {
 
                 <div className='mb-4'>
                     <div className='row'>
-                        <div className='col-10'>
+                        <div className='col-12 col-md-10'>
                             <label htmlFor='expenses' className='form-label'>Expenses</label>
                             <input type='number' className='form-control' id='expenses' min={0} step={0.01} value={formData.expenses} onChange={nullableNumberChange} required/>
                         </div>
@@ -94,7 +94,7 @@ function CompleteForm(props: Props) {
                 </div>
                 <div className='mb-4'>
                     <div className='row'>
-                        <div className='col-10'>
+                        <div className='col-12 col-md-10'>
                             <label htmlFor='mileage' className='form-label'>Kilometres Driven</label>
                             <input type='number' className='form-control' id='mileage' min={0} value={formData.mileage} onChange={nullableNumberChange} required/>
                         </div>

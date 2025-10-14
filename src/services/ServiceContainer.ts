@@ -1,8 +1,8 @@
-  import { IGigService } from './IGigService';
-import LocalGigService from './LocalGigService';
+import ApiGigService from './ApiGigService';
+import { IGigService } from './IGigService';
 
 class ServiceContainer {
-  private static gigService: IGigService = LocalGigService;
+  private static gigService: IGigService = ApiGigService;
 
   static getGigService(): IGigService {
     return this.gigService;

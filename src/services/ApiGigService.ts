@@ -2,13 +2,17 @@ import { Gig } from '../models/Gig';
 import { IGigService } from './IGigService';
 
 class ApiGigService implements IGigService {
-  private readonly baseUrl = 'https://api.gigdiary.com/v1';
-
+  
+  private readonly baseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3000';
+  
   async create(gig: Omit<Gig, 'id'>, signal?: AbortSignal): Promise<Gig> {
+    
+    const payload = JSON.stringify(gig);
+    console.log(payload);
     const response = await fetch(`${this.baseUrl}/gigs`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(gig),
+      body: payload,
       signal
     });
 
@@ -44,10 +48,12 @@ class ApiGigService implements IGigService {
   }
 
   async update(id: string, updatedGig: Omit<Gig, 'id'>, signal?: AbortSignal): Promise<Gig | null> {
+    const payload = JSON.stringify(updatedGig);
+    console.log(payload);
     const response = await fetch(`${this.baseUrl}/gigs/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updatedGig),
+      body: payload,
       signal
     });
 

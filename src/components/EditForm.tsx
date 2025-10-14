@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Gig } from '../models/Gig'
 import ServiceContainer from '../services/ServiceContainer'
@@ -28,12 +28,19 @@ function EditForm(props: Props) {
         }
     }
 
+    function onNumberChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const { id, value } = e.target;
+        if (formData) {
+            setFormData({ ...formData, [id]: parseFloat(value) || 0 });
+        }
+    }
+
     async function onEditSubmit(e: any){
         if (!id) return;
         e.preventDefault();
 
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
+        const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
 
         try {
             const gigService = ServiceContainer.getGigService();
@@ -60,7 +67,7 @@ function EditForm(props: Props) {
                         </div>
                         <div className='col'>
                             <label htmlFor='fee' className='form-label'>Fee</label>
-                            <input type='number' className='form-control' id='fee' min='0' max='2000' value={formData.fee} onChange={onTextChange} disabled={!editing} />
+                            <input type='number' className='form-control' id='fee' min='0' max='2000' value={formData.fee} onChange={onNumberChange} disabled={!editing} />
                         </div>
                     </div>
                 </div>
@@ -69,11 +76,11 @@ function EditForm(props: Props) {
                     <div className='row'>
                         <div className='col'>
                             <label htmlFor='leaveDate' className='form-label'>Leave</label>
-                            <input type='datetime-local' className='form-control' id='leaveDate' value={formData.leaveDate} onChange={onTextChange} disabled={!editing} />
+                            <input type='datetime-local' className='form-control' id='leaveDate' value={formData.leaveDate ? new Date(formData.leaveDate).toISOString().slice(0, 16) : ''} onChange={onTextChange} disabled={!editing} />
                         </div>
                         <div className='col'>
                             <label htmlFor='returnDate' className='form-label'>Return</label>
-                            <input type='datetime-local' className='form-control' id='returnDate' value={formData.returnDate} onChange={onTextChange} disabled={!editing} />
+                            <input type='datetime-local' className='form-control' id='returnDate' value={formData.returnDate ? new Date(formData.returnDate).toISOString().slice(0, 16) : ''} onChange={onTextChange} disabled={!editing} />
                         </div>
                     </div>
                 </div>

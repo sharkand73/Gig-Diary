@@ -24,7 +24,7 @@ function New() {
         e.preventDefault();
 
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
+        const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
 
         try {
             const gigService: IGigService = ServiceContainer.getGigService();
@@ -45,6 +45,10 @@ function New() {
 
     function onCheckboxChange(e: any) {
         setFormData({ ...formData, calendarSync: e.target.checked });
+    }
+
+    function onNumberChange(e: any) {
+        setFormData({ ...formData, [e.target.id]: parseFloat(e.target.value) || 0 });
     }
 
 
@@ -70,7 +74,7 @@ function New() {
                                 </div>
                                 <div className='col'>
                                     <label htmlFor='fee' className='form-label'>Fee</label>
-                                    <input type='number' className='form-control' id='fee' min='0' max='2000' step='10' value={formData.fee} onChange={onTextChange} required />
+                                    <input type='number' className='form-control' id='fee' min='0' max='2000' step='10' value={formData.fee} onChange={onNumberChange} required />
                                 </div>
                             </div>
                         </div>

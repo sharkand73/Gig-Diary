@@ -39,7 +39,7 @@ function CompleteForm(props: Props) {
     const nullableNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = e.target;
         if (formData) {
-            setFormData({ ...formData, [id]: value ? value : 0 });
+            setFormData({ ...formData, [id]: value === '' ? null : parseFloat(value) || 0 });
         }
     }
 
@@ -88,7 +88,7 @@ function CompleteForm(props: Props) {
                     <div className='row'>
                         <div className='col-10'>
                             <label htmlFor='expenses' className='form-label'>Expenses</label>
-                            <input type='number' className='form-control' id='expenses' min={0} step={0.01} value={formData.expenses ?? 0} onChange={nullableNumberChange} />
+                            <input type='number' className='form-control' id='expenses' min={0} step={0.01} value={formData.expenses} onChange={nullableNumberChange} required/>
                         </div>
                     </div>
                 </div>
@@ -96,7 +96,7 @@ function CompleteForm(props: Props) {
                     <div className='row'>
                         <div className='col-10'>
                             <label htmlFor='mileage' className='form-label'>Kilometres Driven</label>
-                            <input type='number' className='form-control' id='mileage' min={0} value={formData.mileage ?? 0} onChange={nullableNumberChange} />
+                            <input type='number' className='form-control' id='mileage' min={0} value={formData.mileage} onChange={nullableNumberChange} required/>
                         </div>
                     </div>
                 </div>

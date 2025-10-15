@@ -31,7 +31,7 @@ function EditForm(props: Props) {
     function onNumberChange(e: React.ChangeEvent<HTMLInputElement>) {
         const { id, value } = e.target;
         if (formData) {
-            setFormData({ ...formData, [id]: parseFloat(value) || 0 });
+            setFormData({ ...formData, [id]: value === '' ? '' : parseFloat(value) || 0 });
         }
     }
 

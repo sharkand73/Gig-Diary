@@ -50,7 +50,8 @@ function New() {
     }
 
     function onNumberChange(e: any) {
-        setFormData({ ...formData, [e.target.id]: parseFloat(e.target.value) || 0 });
+        const value = e.target.value;
+        setFormData({ ...formData, [e.target.id]: value === '' ? '' : parseFloat(value) || 0 });
     }
 
 

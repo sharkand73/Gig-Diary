@@ -39,7 +39,7 @@ function CompleteForm(props: Props) {
     const nullableNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = e.target;
         if (formData) {
-            setFormData({ ...formData, [id]: value === '' ? null : parseFloat(value) || 0 });
+            setFormData({ ...formData, [id]: value === '' ? null : (parseFloat(value) || null) });
         }
     }
 

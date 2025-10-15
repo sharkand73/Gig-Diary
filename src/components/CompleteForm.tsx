@@ -72,7 +72,7 @@ function CompleteForm(props: Props) {
                     <div className='row'>
                         <div className='col-12 col-md-10'>
                             <label htmlFor='datePaid' className='form-label'>Date Paid</label>
-                            <input type='text' className='form-control' id='datePaid' value={formData.datePaid ?? ''} placeholder='yyyy-MM-dd'
+                            <input type='date' className='form-control' id='datePaid' value={formData.datePaid ?? ''}
                                 onChange={nullableTextChange} />
                         </div>
                         <div className='col-12 col-md-2 d-flex align-items-end'>

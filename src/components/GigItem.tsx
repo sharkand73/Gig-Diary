@@ -15,7 +15,8 @@ function GigItem({gig}: GigItemProps) {
         <Link to={`/edit/${gig.id}`} className='text-decoration-none'>
             <div className='card mb-3 shadow-sm bg-light card-hover' style={{cursor: 'pointer'}}>
                 <div className='card-body'>
-                    <div className='row align-items-center'>
+                    {/* Desktop layout */}
+                    <div className='row align-items-center d-none d-md-flex'>
                         <div className='col-3'>
                             <small className='text-muted'>Date</small>
                             <div className='fw-bold'>{formatDate(gig.leaveDate)}</div>
@@ -39,6 +40,17 @@ function GigItem({gig}: GigItemProps) {
                         </div>
                         <div className='col-2 text-end'>
                             <span className='badge bg-primary'>£{gig.fee}</span>
+                        </div>
+                    </div>
+                    
+                    {/* Mobile layout */}
+                    <div className='d-md-none'>
+                        <div className='mb-2 fw-bold'>{formatDate(gig.leaveDate)}</div>
+                        <div className='mb-2 fw-bold'>{gig.act}</div>
+                        <div className='mb-2'>{gig.venue}</div>
+                        <div className='d-flex justify-content-between align-items-center'>
+                            <span className='badge bg-primary'>£{gig.fee}</span>
+                            {!gig.isComplete && <span className='text-danger'><FontAwesomeIcon icon={faExclamation} size="lg"/></span>}
                         </div>
                     </div>
                 </div>

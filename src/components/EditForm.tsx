@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Gig } from '../models/Gig'
 import ServiceContainer from '../services/ServiceContainer'
@@ -13,6 +13,7 @@ interface Props {
 function EditForm(props: Props) {
     const { id, editing, formData, setFormData } = props;
     const navigate = useNavigate();
+    const [submitting, setSubmitting] = useState(false);
 
     function onTextChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
         const { id, value } = e.target;
@@ -41,6 +42,7 @@ function EditForm(props: Props) {
 
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+        setSubmitting(true);
 
         try {
             const gigService = ServiceContainer.getGigService();
@@ -50,6 +52,7 @@ function EditForm(props: Props) {
             navigate('/list');
 
         } catch (error) {
+            setSubmitting(false);
             alert('Failed to update gig: ' + error)
             console.error('Failed to update gig:', error);
         }
@@ -135,8 +138,15 @@ function EditForm(props: Props) {
                 </div>
                 {editing &&
                     <div className="text-end mt-4">
-                        <button type="button" className="btn btn-outline-secondary me-2" onClick={() => navigate(`/list`)}>Cancel</button>
-                        <button type="submit" className="btn btn-primary">Submit</button>
+                        <button type="button" className="btn btn-outline-secondary me-2" onClick={() => navigate(`/list`)} disabled={submitting}>Cancel</button>
+                        <button type="submit" className="btn btn-primary" disabled={submitting}>
+                            {submitting ? (
+                                <>
+                                    <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                    Updating...
+                                </>
+                            ) : 'Submit'}
+                        </button>
                     </div>
                 }
             </form>

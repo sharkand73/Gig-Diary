@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Gig } from '../models/Gig'
 import ServiceContainer from '../services/ServiceContainer'
@@ -15,6 +15,7 @@ interface Props {
 function CompleteForm(props: Props) {
     const { id, gig, formData, setFormData, setCompleting, setEditing } = props
     const navigate = useNavigate();
+    const [submitting, setSubmitting] = useState(false);
 
     function resetPage() {
         setCompleting(false);
@@ -49,6 +50,7 @@ function CompleteForm(props: Props) {
 
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 3000);
+        setSubmitting(true);
 
         try {
             const updatedFormData = { ...formData, isComplete: true };
@@ -59,6 +61,7 @@ function CompleteForm(props: Props) {
             navigate('/list');
 
         } catch (error) {
+            setSubmitting(false);
             alert('Failed to complete gig: ' + error)
             console.error('Failed to complete gig:', error);
         }
@@ -102,8 +105,15 @@ function CompleteForm(props: Props) {
                 </div>
 
                 <div className="text-end mt-4">
-                    <button type="button" className="btn btn-outline-secondary me-2" onClick={() => resetPage()}>Cancel</button>
-                    <button type="submit" className="btn btn-primary">Complete</button>
+                    <button type="button" className="btn btn-outline-secondary me-2" onClick={() => resetPage()} disabled={submitting}>Cancel</button>
+                    <button type="submit" className="btn btn-primary" disabled={submitting}>
+                        {submitting ? (
+                            <>
+                                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                Completing...
+                            </>
+                        ) : 'Complete'}
+                    </button>
                 </div>
             </form>
         </div>

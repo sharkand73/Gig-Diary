@@ -8,6 +8,7 @@ import { faList } from '@fortawesome/free-solid-svg-icons';
 function New() {
 
     const navigate = useNavigate();
+    const [submitting, setSubmitting] = useState(false);
     const [formData, setFormData] = useState({
         act: '',
         fee: 200,
@@ -27,7 +28,7 @@ function New() {
 
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
-
+        setSubmitting(true);
         try {
             const gigService: IGigService = ServiceContainer.getGigService();
             const newGig = await gigService.create(formData as any, controller.signal);
@@ -36,6 +37,7 @@ function New() {
             navigate('/list');
 
         } catch (error) {
+            setSubmitting(false);
             alert('Failed to create gig: ' + error)
             console.error('Failed to create gig:', error);
         }
@@ -145,8 +147,15 @@ function New() {
                         </div>
 
                         <div className="text-end mt-4">
-                            <button type="button" className="btn btn-outline-secondary me-2" onClick={() => navigate('/list')}>Cancel</button>
-                            <button type="submit" className="btn btn-primary">Submit</button>
+                            <button type="button" className="btn btn-outline-secondary me-2" onClick={() => navigate('/list')} disabled={submitting}>Cancel</button>
+                            <button type="submit" className="btn btn-primary" disabled={submitting}>
+                                {submitting ? (
+                                    <>
+                                        <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                        Submitting...
+                                    </>
+                                ) : 'Submit'}
+                            </button>
                         </div>
 
                     </form>

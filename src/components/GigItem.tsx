@@ -35,9 +35,9 @@ function GigItem({gig}: GigItemProps) {
                         <div className='col-1 text-end'>
                             <span>
                                 {
-                                    !gig.isComplete ? <span className='text-danger'>
+                                    !gig.isComplete && !gig.isFuture && <span className='text-danger'>
                                         <FontAwesomeIcon icon={faExclamation} size="lg"/>
-                                    </span> : null
+                                    </span>
                                 }
                             </span>
                         </div>
@@ -53,7 +53,7 @@ function GigItem({gig}: GigItemProps) {
                         <div className='mb-2'>{gig.venue}</div>
                         <div className='d-flex justify-content-between align-items-center'>
                             <span className='badge bg-primary'>£{gig.fee}</span>
-                            {!gig.isComplete && <span className='text-danger'><FontAwesomeIcon icon={faExclamation} size="lg"/></span>}
+                            {!gig.isComplete && !gig.isFuture && <span className='text-danger'><FontAwesomeIcon icon={faExclamation} size="lg"/></span>}
                         </div>
                     </div>
                 </div>

@@ -19,4 +19,5 @@ export interface Gig {
   gigDate?: string; 
   isFuture?: boolean;
   isPaid?: boolean;
+  isNextGig?: boolean;
 }

@@ -10,10 +10,12 @@ interface GigItemProps {
 }
 
 function GigItem({gig}: GigItemProps) {
+    const month = new Date(gig.leaveDate).getMonth() + 1; // getMonth() is 0-based
+    const backgroundColor = month % 2 === 1 ? '#fef7f7' : '#fffef7'; // Light pink for odd, light yellow for even
 
     return (
         <Link to={`/edit/${gig.id}`} className='text-decoration-none'>
-            <div className='card mb-3 shadow-sm bg-light card-hover' style={{cursor: 'pointer'}}>
+            <div className='card mb-3 shadow-sm card-hover' style={{cursor: 'pointer', backgroundColor}}>
                 <div className='card-body'>
                     {/* Desktop layout */}
                     <div className='row align-items-center d-none d-md-flex'>

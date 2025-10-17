@@ -56,6 +56,11 @@ function New() {
         setFormData({ ...formData, [e.target.id]: value === '' ? '' : parseFloat(value) || 0 });
     }
 
+    function onLeaveDateChange(e: any){
+        const value = e.target.value;
+        setFormData({ ...formData, leaveDate: value, returnDate: value })
+    }
+
 
     return (
         <div className='container mt-5 pt-2 bg-light border-primary'>
@@ -88,7 +93,7 @@ function New() {
                             <div className='row'>
                                 <div className='col-12 col-md-6'>
                                     <label htmlFor='leaveDate' className='form-label'>Leave</label>
-                                    <input type='datetime-local' className='form-control' id='leaveDate' value={formData.leaveDate} onChange={onTextChange} />
+                                    <input type='datetime-local' className='form-control' id='leaveDate' value={formData.leaveDate} onChange={onLeaveDateChange} />
                                 </div>
                                 <div className='col-12 col-md-6'>
                                     <label htmlFor='returnDate' className='form-label'>Return</label>

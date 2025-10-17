@@ -7,6 +7,7 @@ import Loading from '../components/Loading';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAdd } from '@fortawesome/free-solid-svg-icons';
+import GigList from '../components/GigList';
 
 function List() {
 
@@ -25,15 +26,17 @@ function List() {
     if (!gigs || gigs.length === 0) return <Loading />
 
     return (
-        <div className='container mt-5 pt-2 bg-light border-primary'>
-            <div className='navbar mb-2'>
+        <div className='container-fluid vh-100 d-flex flex-column bg-light border-primary'>
+            <div className='navbar mb-2 flex-shrink-0'>
                 <div className='navbar-Links ms-auto'>
                     <Link to='/new' className='navbar-Link me-3' title="View gig list">
                         <FontAwesomeIcon icon={faAdd} size="2x"/>
                     </Link>
                 </div>
             </div>
-            {gigs.map(g => <GigItem gig={g} key={g.id} />)}
+            <div className='flex-grow-1 overflow-hidden'>
+                <GigList gigs = {gigs} />
+            </div>
         </div>
     )
 }

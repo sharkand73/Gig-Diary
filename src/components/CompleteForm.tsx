@@ -53,7 +53,8 @@ function CompleteForm(props: Props) {
         setSubmitting(true);
 
         try {
-            const updatedFormData = { ...formData, isComplete: true };
+            const updatedFormData = { ...formData, isComplete: true, leaveDate: new Date(formData.leaveDate).toISOString(),
+                returnDate: new Date(formData.returnDate).toISOString()};
             const gigService = ServiceContainer.getGigService();
             const newGig = await gigService.update(id, updatedFormData as any, controller.signal);
             console.log('Updated gig:', newGig);

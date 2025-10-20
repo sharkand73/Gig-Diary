@@ -45,8 +45,14 @@ function EditForm(props: Props) {
         setSubmitting(true);
 
         try {
+            // Convert datetime-local format to UTC ISO strings for API
+            const apiData = {
+                ...formData,
+                leaveDate: new Date(formData.leaveDate).toISOString(),
+                returnDate: new Date(formData.returnDate).toISOString()
+            };
             const gigService = ServiceContainer.getGigService();
-            const newGig = await gigService.update(id, formData as any, controller.signal);
+            const newGig = await gigService.update(id, apiData as any, controller.signal);
             console.log('Updated gig:', newGig);
             clearTimeout(timeoutId);
             navigate('/list');
@@ -57,6 +63,13 @@ function EditForm(props: Props) {
             console.error('Failed to update gig:', error);
         }
     }
+
+    function onLeaveDateChange(e: any){
+        const value = e.target.value;
+        setFormData({ ...formData, leaveDate: value, returnDate: value })
+    }
+
+
 
     return (
         <div className='card-body bg-light'>
@@ -79,11 +92,11 @@ function EditForm(props: Props) {
                     <div className='row'>
                         <div className='col-12 col-md-6'>
                             <label htmlFor='leaveDate' className='form-label'>Leave</label>
-                            <input type='datetime-local' className='form-control' id='leaveDate' value={formData.leaveDate ? new Date(formData.leaveDate).toISOString().slice(0, 16) : ''} onChange={onTextChange} disabled={!editing} />
+                            <input type='datetime-local' className='form-control' id='leaveDate' value={formData.leaveDate} onChange={onLeaveDateChange} disabled={!editing} />
                         </div>
                         <div className='col-12 col-md-6'>
                             <label htmlFor='returnDate' className='form-label'>Return</label>
-                            <input type='datetime-local' className='form-control' id='returnDate' value={formData.returnDate ? new Date(formData.returnDate).toISOString().slice(0, 16) : ''} onChange={onTextChange} disabled={!editing} />
+                            <input type='datetime-local' className='form-control' id='returnDate' value={formData.returnDate} onChange={onTextChange} disabled={!editing} />
                         </div>
                     </div>
                 </div>
@@ -116,7 +129,7 @@ function EditForm(props: Props) {
 
                 <div className='mb-4'>
                     <label htmlFor='description' className='form-label'>Description</label>
-                    <textarea className='form-control' id='description' rows={6} value={formData.description} onChange={onTextChange} disabled={!editing} />
+                    <textarea className='form-control' id='description' rows={6} value={formData.description || ''} onChange={onTextChange} disabled={!editing} />
                 </div>
 
                 <div className='mb-4'>

@@ -7,19 +7,23 @@ import { faList } from '@fortawesome/free-solid-svg-icons';
 
 function New() {
 
+    const now = new Date();
+    const localDateTime = new Date(now.getTime() - (now.getTimezoneOffset() * 60000)).toISOString().slice(0, 16);
+    const localDate = localDateTime.slice(0, 10);
+
     const navigate = useNavigate();
     const [submitting, setSubmitting] = useState(false);
     const [formData, setFormData] = useState({
         act: '',
         fee: 200,
-        leaveDate: new Date().toISOString().slice(0, 16),
-        returnDate: new Date().toISOString().slice(0, 16),
+        leaveDate: localDateTime,
+        returnDate: localDateTime,
         description: '',
         venue: '',
         postcode: '',
         instrument: 'Upright',
         calendarSync: false,
-        bookingDate: new Date().toISOString().slice(0, 10),
+        bookingDate: localDate,
         contact: ''
     });
 
@@ -30,8 +34,14 @@ function New() {
         const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
         setSubmitting(true);
         try {
+            const apiData = {
+                ...formData,
+                leaveDate: new Date(formData.leaveDate).toISOString(),
+                returnDate: new Date(formData.returnDate).toISOString()
+            };
+            console.log('Creating gig:', apiData);
             const gigService: IGigService = ServiceContainer.getGigService();
-            const newGig = await gigService.create(formData as any, controller.signal);
+            const newGig = await gigService.create(apiData as any, controller.signal);
             console.log('Created gig:', newGig);
             clearTimeout(timeoutId);
             navigate('/list');
@@ -61,6 +71,13 @@ function New() {
         setFormData({ ...formData, leaveDate: value, returnDate: value })
     }
 
+    const processDate = (dateString: string) => {
+        if (!dateString) return '';
+        // If it's already in datetime-local format, return as is
+        if (dateString.length === 16 && dateString.includes('T')) return dateString;
+        // Otherwise convert from ISO string
+        return dateString.slice(0, 16);
+    };
 
     return (
         <div className='container mt-5 pt-2 bg-light border-primary'>
@@ -93,11 +110,13 @@ function New() {
                             <div className='row'>
                                 <div className='col-12 col-md-6'>
                                     <label htmlFor='leaveDate' className='form-label'>Leave</label>
-                                    <input type='datetime-local' className='form-control' id='leaveDate' value={formData.leaveDate} onChange={onLeaveDateChange} />
+                                    <input type='datetime-local' className='form-control' id='leaveDate' 
+                                    value={processDate(formData.leaveDate)} onChange={onLeaveDateChange} />
                                 </div>
                                 <div className='col-12 col-md-6'>
                                     <label htmlFor='returnDate' className='form-label'>Return</label>
-                                    <input type='datetime-local' className='form-control' id='returnDate' value={formData.returnDate} onChange={onTextChange} />
+                                    <input type='datetime-local' className='form-control' id='returnDate' 
+                                    value={processDate(formData.returnDate)} onChange={onTextChange} />
                                 </div>
                             </div>
                         </div>

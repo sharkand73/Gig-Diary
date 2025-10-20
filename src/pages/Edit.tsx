@@ -23,8 +23,19 @@ function Edit() {
         const fetchGig = async () => {
             if (id) {
                 const gigData = await gigService.getById(id);
-                setGig(gigData ? {...gigData} : null);
-                setFormData(gigData ? {...gigData} : null);
+                if (gigData) {                    
+                    const formGigData = {
+                        ...gigData,
+                        leaveDate: convertToLocal(gigData.leaveDate),
+                        returnDate: convertToLocal(gigData.returnDate)
+                    };
+                    
+                    setGig({...formGigData});
+                    setFormData({...formGigData});
+                } else {
+                    setGig(null);
+                    setFormData(null);
+                }
             }
         };
         fetchGig();
@@ -37,6 +48,15 @@ function Edit() {
             navigate('/list');
         }
     }
+
+    // Convert UTC dates to local datetime-local format for form inputs
+    const convertToLocal = (dateString: string) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        const offset = date.getTimezoneOffset() * 60000;
+        const localDate = new Date(date.getTime() - offset);
+        return localDate.toISOString().slice(0, 16);
+    };
 
     
     if (!formData || !gig) return <Loading />

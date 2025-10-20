@@ -101,7 +101,7 @@ function New() {
                                 </div>
                                 <div className='col-12 col-md-6'>
                                     <label htmlFor='fee' className='form-label'>Fee</label>
-                                    <input type='number' className='form-control' id='fee' min='0' max='2000' step='10' value={formData.fee} onChange={onNumberChange} required />
+                                    <input type='number' className='form-control' id='fee' min='0' max='2000' step='0.01' value={formData.fee} onChange={onNumberChange} required />
                                 </div>
                             </div>
                         </div>

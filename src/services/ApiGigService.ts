@@ -84,6 +84,16 @@ class ApiGigService implements IGigService {
 
     return true;
   }
+
+  async getMappings(signal?: AbortSignal): Promise<Record<string, string>> {
+    const response = await fetch(`${this.baseUrl}/mappings`, { signal });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch mappings: ${response.statusText}`);
+    }
+
+    return response.json();
+  }
 }
 
 export default new ApiGigService();

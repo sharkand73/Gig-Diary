@@ -7,6 +7,8 @@ import { faList } from '@fortawesome/free-solid-svg-icons';
 
 function New() {
 
+    const mappingsData = sessionStorage.getItem("mappings");
+    const { Postcodes: postcodes = {}, Contacts: contacts = {}, Instruments: instruments = {} } = mappingsData ? JSON.parse(mappingsData) : {};
     const now = new Date();
     const localDateTime = new Date(now.getTime() - (now.getTimezoneOffset() * 60000)).toISOString().slice(0, 16);
     const localDate = localDateTime.slice(0, 10);
@@ -71,6 +73,19 @@ function New() {
         setFormData({ ...formData, leaveDate: value, returnDate: value })
     }
 
+    function onVenueChange(e: any) {
+        const venue = e.target.value;
+        const postcode = postcodes[venue] ? postcodes[venue] : '';
+        setFormData({ ...formData, venue: venue, postcode: postcode });
+    }
+
+    function onActChange(e: any) {
+        const act = e.target.value;
+        const contact = contacts[act] ? contacts[act] : '';
+        const instrument = instruments[act] ? instruments[act] : 'upright';
+        setFormData({ ...formData, act: act, contact: contact, instrument: instrument });
+    }
+
     const processDate = (dateString: string) => {
         if (!dateString) return '';
         // If it's already in datetime-local format, return as is
@@ -97,7 +112,7 @@ function New() {
                             <div className='row'>
                                 <div className='col-12 col-md-6'>
                                     <label htmlFor='act' className='form-label'>Act</label>
-                                    <input type='text' className='form-control' id='act' value={formData.act} onChange={onTextChange} required />
+                                    <input type='text' className='form-control' id='act' value={formData.act} onChange={onActChange} required />
                                 </div>
                                 <div className='col-12 col-md-6'>
                                     <label htmlFor='fee' className='form-label'>Fee</label>
@@ -125,7 +140,7 @@ function New() {
                             <div className='row'>
                                 <div className='col-12 col-md-6'>
                                     <label htmlFor='venue' className='form-label'>Venue</label>
-                                    <input type='text' className='form-control' id='venue' value={formData.venue} onChange={onTextChange} required />
+                                    <input type='text' className='form-control' id='venue' value={formData.venue} onChange={onVenueChange} required />
                                 </div>
                                 <div className='col-12 col-md-6'>
                                     <label htmlFor='postcode' className='form-label'>Postcode</label>

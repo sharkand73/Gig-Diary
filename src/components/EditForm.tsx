@@ -40,6 +40,12 @@ function EditForm(props: Props) {
         if (!id) return;
         e.preventDefault();
 
+        // Validate that return date is after leave date
+        if (new Date(formData.returnDate) <= new Date(formData.leaveDate)) {
+            alert('Return date must be after leave date');
+            return;
+        }
+
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
         setSubmitting(true);

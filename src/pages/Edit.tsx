@@ -43,9 +43,15 @@ function Edit() {
 
     async function onDelete() {
         if (id) {
-            await gigService.delete(id);
-            setDeleting(false);
-            navigate('/list');
+            try {
+                await gigService.delete(id);
+                setDeleting(false);
+                navigate('/list');
+            } catch (error) {
+                alert('Failed to delete gig: ' + error);
+                console.error('Failed to delete gig:', error);
+                throw error;
+            }
         }
     }
 

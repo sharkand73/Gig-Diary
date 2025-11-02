@@ -28,6 +28,7 @@ function New() {
         bookingDate: localDate,
         contact: ''
     });
+    const [leaveDateChanged, setLeaveDateChanged] = useState(false);
 
     async function handleSubmit(e: any) {
         e.preventDefault();
@@ -76,7 +77,12 @@ function New() {
 
     function onLeaveDateChange(e: any){
         const value = e.target.value;
-        setFormData({ ...formData, leaveDate: value, returnDate: value })
+        if (!leaveDateChanged || new Date(value) > new Date(formData.returnDate)){
+            setFormData({ ...formData, leaveDate: value, returnDate: value });
+            setLeaveDateChanged(true);
+            return;
+        }
+        setFormData({ ...formData, leaveDate: value});
     }
 
     function onVenueChange(e: any) {

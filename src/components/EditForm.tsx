@@ -72,7 +72,12 @@ function EditForm(props: Props) {
 
     function onLeaveDateChange(e: any){
         const value = e.target.value;
-        setFormData({ ...formData, leaveDate: value, returnDate: value })
+        if(new Date(value) > new Date(formData.returnDate))
+        {
+            setFormData({ ...formData, leaveDate: value, returnDate: value });
+            return;
+        }
+        setFormData({ ...formData, leaveDate: value });
     }
 
 

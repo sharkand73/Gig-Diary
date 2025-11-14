@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import New from './pages/New';
 import List from './pages/List';
 import Edit from './pages/Edit';
+import Stats from './pages/GigStats';
 import ServiceContainer from './services/ServiceContainer';
 import './App.css';
 
@@ -39,6 +40,7 @@ function App() {
           <Route path="new" element={<New />} />
           <Route path="list" element={<List />} />
           <Route path="edit/:id" element={<Edit />} />
+          <Route path="stats" element={<Stats />} />
         </Routes>
       </Router>
     </div>

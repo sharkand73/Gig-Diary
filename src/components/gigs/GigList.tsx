@@ -1,5 +1,5 @@
 import React from 'react'
-import { Gig } from '../models/Gig'
+import { Gig } from '../../models/Gig'
 import GigItem from './GigItem'
 
 interface Props {

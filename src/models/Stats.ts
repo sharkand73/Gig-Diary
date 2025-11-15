@@ -1,7 +1,4 @@
-export interface KeyValuePair<T> {
-    Key: number | string;
-    Value: T;
-}
+import { KeyValuePair } from "./KeyValuePair";
 
 export interface Stats {
     GigCount: number;

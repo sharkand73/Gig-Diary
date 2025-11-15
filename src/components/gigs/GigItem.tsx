@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Gig } from '../models/Gig';
-import { formatDate } from '../utilities/common';
+import { Gig } from '../../models/Gig';
+import { formatDate } from '../../utilities/common';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExclamation } from '@fortawesome/free-solid-svg-icons';
 

@@ -4,9 +4,9 @@ import ServiceContainer from '../services/ServiceContainer';
 import { Gig } from '../models/Gig';
 import Loading from '../components/Loading';
 import NavBar from '../components/NavBar';
-import ConfirmDelete from '../components/ConfirmDelete';
-import CompleteForm from '../components/CompleteForm';
-import EditForm from '../components/EditForm';
+import ConfirmDelete from '../components/gigs/ConfirmDelete';
+import CompleteForm from '..//components/gigs/CompleteForm';
+import EditForm from '../components/gigs/EditForm';
 
 
 function Edit() {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Gig } from '../models/Gig'
-import ServiceContainer from '../services/ServiceContainer'
+import { Gig } from '../../models/Gig'
+import ServiceContainer from '../../services/ServiceContainer'
 
 interface Props {
     id: string | undefined

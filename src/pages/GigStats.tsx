@@ -4,6 +4,7 @@ import { Stats } from '../models/Stats';
 import Loading from '../components/Loading';
 import EarningsByMonthStats from '../components/stats/EarningsByMonthStats';
 import GigsByMonthStats from '../components/stats/GigsByMonthStats';
+import TopPayerStats from '../components/stats/TopPayerStats';
 
 function GigStats() {
     const [stats, setStats] = useState<Stats | null>(null);
@@ -23,9 +24,10 @@ function GigStats() {
 
     return (
         <>
-            <h2>Gig Stats</h2>
+            <h2 style = {{ marginBottom: 50 }}>Gig Stats</h2>
             <EarningsByMonthStats earningsByMonth={stats.EarningsByMonth} totalEarnings={stats.EarningsThisYear} />
             <GigsByMonthStats gigsByMonth={stats.MonthlyGigTally} totalGigs={stats.GigCount} />
+            <TopPayerStats topPayers={stats.EarningsByPayer} />
         </>
     )
 }

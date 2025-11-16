@@ -54,6 +54,8 @@ function EditForm(props: Props) {
             // Convert datetime-local format to UTC ISO strings for API
             const apiData = {
                 ...formData,
+                contact: formData.contact.trim(),
+                venue: formData.venue.trim(),
                 leaveDate: new Date(formData.leaveDate).toISOString(),
                 returnDate: new Date(formData.returnDate).toISOString()
             };

@@ -45,6 +45,8 @@ function New() {
         try {
             const apiData = {
                 ...formData,
+                contact: formData.contact.trim(),
+                venue: formData.venue.trim(),
                 leaveDate: new Date(formData.leaveDate).toISOString(),
                 returnDate: new Date(formData.returnDate).toISOString()
             };

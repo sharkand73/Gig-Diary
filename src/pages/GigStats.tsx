@@ -3,6 +3,7 @@ import ServiceContainer from '../services/ServiceContainer';
 import { Stats } from '../models/Stats';
 import Loading from '../components/Loading';
 import EarningsByMonthStats from '../components/stats/EarningsByMonthStats';
+import GigsByMonthStats from '../components/stats/GigsByMonthStats';
 
 function GigStats() {
     const [stats, setStats] = useState<Stats | null>(null);
@@ -23,8 +24,8 @@ function GigStats() {
     return (
         <>
             <h2>Gig Stats</h2>
-            <div>Earnings by Month</div>
-            <EarningsByMonthStats earningsByMonth={stats.EarningsByMonth} />
+            <EarningsByMonthStats earningsByMonth={stats.EarningsByMonth} totalEarnings={stats.EarningsThisYear} />
+            <GigsByMonthStats gigsByMonth={stats.MonthlyGigTally} totalGigs={stats.GigCount} />
         </>
     )
 }

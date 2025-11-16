@@ -3,14 +3,16 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { KeyValuePair } from '../../models/KeyValuePair'
 
 interface Props {
+    totalEarnings: number,
     earningsByMonth: KeyValuePair<number>[]
 }
 
 function EarningsByMonthStats(props: Props) {
-    const { earningsByMonth } = props
+    const { earningsByMonth, totalEarnings } = props
 
     return (
-        <div style={{ width: '100%', height: 300 }}>
+        <div style={{ width: '100%', height: 300, marginBottom: 30 }}>
+            <div>Total earnings: £{totalEarnings}</div>
             <ResponsiveContainer>
                 <BarChart data={earningsByMonth}>
                     <CartesianGrid strokeDasharray="3 3" />

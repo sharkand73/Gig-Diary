@@ -24,7 +24,7 @@ function New() {
         venue: '',
         postcode: '',
         instrument: 'Upright',
-        calendarSync: false,
+        calendarSync: true,
         bookingDate: localDate,
         contact: ''
     });
